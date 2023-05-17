@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start": "nodemon index.js"
+  },
   "dependencies": {
     "bluebird": "^3.7.2",
     "bootstrap": "^5.0.0",
@@ -20,5 +23,8 @@
     "sequelize": "^6.31.1",
     "stripe": "^12.5.0",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }

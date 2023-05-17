@@ -1,0 +1,39 @@
+version: '3.3'
+services:
+  db:
+    image: mysql
+    restart: always
+    container_name: mysql22
+    environment:
+      MYSQL_DATABASE: 'stars_music'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'admin'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: '123456'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: '123456'
+    ports:
+      # <Port exposed> : <MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    networks:
+      - backend
+  server22:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    command: "npm start"
+    depends_on:
+      - db
+    ports:
+      - '3005:3005'
+    restart: 'unless-stopped'
+
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge

@@ -3,10 +3,17 @@ const mysql = require("mysql2/promise");
 const Promise = require("bluebird");
 
 
-const variables = require("../config/Config");
+//const variables = require("../config/config");
 const env = process.env.NODE_ENV || 'development';
-const config = variables[env];
-
+const config = {
+    user: 'admin',
+    password: '123456',
+    database: 'stars_music',
+    host: 'mysql22',
+    port: 3306,
+    dialect: 'mysql'
+};
+console.log(config);
 const createDatabase = async () => {
     return new Promise(async (resolve, reject) => {
         try {
