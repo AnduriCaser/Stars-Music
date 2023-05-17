@@ -4,81 +4,63 @@ const { v4: uuidv4 } = require("uuid");
 
 
 module.exports = async (sequelize, DataTypes) => {
-    class User extends Model {
+    class Song extends Model {
         toJSON() {
             const attributes = { ...this.get() };
 
             return attributes;
         };
         static async associate(models) {
-            (await models.User).belongsTo((await models.Role), { foreignKey: 'roleId' });
-            (await models.User).hasMany((await models.Product), { foreignKey: 'userId' });
-            (await models.User).hasMany((await models.File), { foreignKey: 'userId' });
+            (await models.Song).belongsTo((await models.Album), { foreignKey: 'albumId' });
+            (await models.Song).belongsTo((await models.Artist), { foreignKey: 'artistId' });
+            (await models.Song).belongsTo((await models.Playlist), { foreignKey: 'playlistId' });
         };
     };
 
-    User.init({
+    Song.init({
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
-        roleId: {
+        albumId: {
             type: DataTypes.INTEGER,
             references: {
-                model: 'roles',
+                model: 'albums',
                 key: 'id'
             }
         },
-        username: DataTypes.STRING,
-        email: {
-            type: DataTypes.STRING,
-            allowNull: {
-                args: false,
-                msg: 'Please enter your email'
-            },
-            unique: {
-                args: true,
-                msg: 'Email already exists'
+        artistId: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'artists',
+                key: 'id'
             }
         },
-        phoneNumber: DataTypes.STRING,
-        password: {
-            type: DataTypes.STRING,
-            allowNull: {
-                args: false,
-                msg: 'Please enter your password'
+        playlistId: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'playlists',
+                key: 'id'
             }
         },
-        resetToken: {
+        name: DataTypes.STRING,
+        image: DataTypes.STRING,
+        duration: DataTypes.STRING,
+        slug: {
             type: DataTypes.STRING,
             unique: {
                 args: false
             }
-        },
+        }
     }, {
         sequelize,
-        modelName: 'User',
-        tableName: 'users'
+        modelName: 'Song',
+        tableName: 'songs'
     }
     );
+    
+    await Song.sync();
 
-    // User.prototype.getRole = async (roleId) => {
-    //     const role = await (await Role).findOne({ where: { id: roleId } });
-    //     return role;
-    // };
-    User.prototype.generateToken = async (email) => {
-        const token = uuidv4();
-        const user = await User.findOne({ where: { email: email } });
-        user.resetToken = token;
-        user.save();
-    }
-    User.prototype.getResetToken = async (userId) => {
-        const user = await User.findOne({ where: { id: userId } });
-        return user.resetToken;
-    };
-
-    await User.sync();
-
-    return User;
+    return Song;
 };

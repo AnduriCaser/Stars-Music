@@ -12,8 +12,7 @@ module.exports = async (sequelize, DataTypes) => {
         };
         static async associate(models) {
             (await models.User).belongsTo((await models.Role), { foreignKey: 'roleId' });
-            (await models.User).hasMany((await models.Product), { foreignKey: 'userId' });
-            (await models.User).hasMany((await models.File), { foreignKey: 'userId' });
+            (await models.User).hasMany((await models.Playlist), { foreignKey: 'userId' });
         };
     };
 
@@ -50,12 +49,18 @@ module.exports = async (sequelize, DataTypes) => {
                 msg: 'Please enter your password'
             }
         },
-        resetToken: {
+        slug: {
             type: DataTypes.STRING,
             unique: {
                 args: false
             }
         },
+        resetToken: {
+            type: DataTypes.STRING,
+            unique: {
+                args: false
+            }
+        }
     }, {
         sequelize,
         modelName: 'User',

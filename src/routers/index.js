@@ -3,7 +3,7 @@ const { customErrorResponse } = require("../utils/CustomResponse");
 const express = require("express");
 const session = require("express-session");
 const bodyParser = require("body-parser");
-const cookieParser = require("cookie-session");
+const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const path = require("path");
 
@@ -33,15 +33,27 @@ module.exports = async (app) => {
 
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
-    // CSRF token !!!
-    //app.use(cookieParser());
+    app.use(cookieParser());
     app.use(session({
         secret: process.env.SECRET_KEY,
         resave: false,
         saveUninitialized: true
     }));
 
-    app.use('/admin', AdminRouter);
+    app.use((req, res, next) => {
+        res.locals.csrfToken = req.csrfToken();
+        next();
+    });
+    app.use((req, res, next) => {
+        if (!req.session.user) {
+            return res.redirect('/auth/login');
+        }
+        next();
+    });
+
+    // Gerekli Routingleri yap en son !!!
+
+    //app.use('/admin', AdminRouter);
     app.use('/user', UserRouter);
     app.use('/auth', AuthRouter);
 

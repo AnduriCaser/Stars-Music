@@ -1,11 +1,9 @@
 const model = require("../models");
 
-
-const { hashPassword, hashCompare } = require("../utils/CustomHash");
 const { customErrorResponse } = require("../utils/CustomResponse");
 
 module.exports = {
-    async login(req, res) {
+    async dashboard(req, res) {
         const { User } = await model;
 
         if (req.method === 'GET') {
@@ -45,7 +43,7 @@ module.exports = {
             return customErrorResponse(res, 405, "Method not allowed");
         }
     },
-    async register(req, res) {
+    async updateProfile(req, res) {
         const { User, Role } = await model;
 
         if (req.method === 'GET') {
@@ -76,7 +74,7 @@ module.exports = {
             return customErrorResponse(res, 405, "Method not allowed");
         }
     },
-    async resetPassword(req, res) {
+    async deleteAccount(req, res) {
         const { User } = await model;
 
         if (req.method === 'GET') {
@@ -106,7 +104,7 @@ module.exports = {
         }
     },
 
-    async changePassword(req, res) {
+    async getUserLikedSongs(req, res) {
         const { User } = await model;
 
         if (req.method === 'GET') {
@@ -153,7 +151,7 @@ module.exports = {
         }
     },
 
-    async logout(req, res) {
+    async getUserPlaylists(req, res) {
         req.session.regenerate((err) => {
             if (err) throw err;
             req.session.user = null;

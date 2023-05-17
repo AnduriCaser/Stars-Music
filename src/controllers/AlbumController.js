@@ -5,7 +5,7 @@ const { hashPassword, hashCompare } = require("../utils/CustomHash");
 const { customErrorResponse } = require("../utils/CustomResponse");
 
 module.exports = {
-    async login(req, res) {
+    async getAllAlbums(req, res) {
         const { User } = await model;
 
         if (req.method === 'GET') {
@@ -45,7 +45,7 @@ module.exports = {
             return customErrorResponse(res, 405, "Method not allowed");
         }
     },
-    async register(req, res) {
+    async getAlbumById(req, res) {
         const { User, Role } = await model;
 
         if (req.method === 'GET') {
@@ -76,7 +76,7 @@ module.exports = {
             return customErrorResponse(res, 405, "Method not allowed");
         }
     },
-    async resetPassword(req, res) {
+    async createAlbum(req, res) {
         const { User } = await model;
 
         if (req.method === 'GET') {
@@ -106,7 +106,83 @@ module.exports = {
         }
     },
 
-    async changePassword(req, res) {
+    async updateAlbum(req, res) {
+        const { User } = await model;
+
+        if (req.method === 'GET') {
+            return res.render('auth/resetPassword');
+        } else if (req.method === 'POST') {
+            if (req.body || req.body !== undefined) {
+                const { email } = req.body;
+                if (((email || email !== undefined) && (typeof email === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { email: email } });
+                        if (user) {
+                            await user.generateToken(user.email);
+                            return res.redirect('/auth/login');
+                        }
+                        throw new Error("User doesn't exists !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "Something went wrong !");
+                }
+            } else {
+                return customErrorResponse(res, 405, "Body is empty");
+            }
+        } else {
+            return customErrorResponse(res, 405, "Method not allowed");
+        }
+    },
+
+    async deleteAlbum(req, res) {
+        const { User } = await model;
+
+        if (req.method === 'GET') {
+            if (req.params || req.params !== undefined) {
+                const { uuid } = req.params;
+                if (((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            return res.render('auth/changePassword', {
+                                uuid
+                            });
+                        };
+                        throw new Error("User not found !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "Something went wrong !");
+                }
+            }
+        } else if (req.method === 'POST') {
+            if ((req.params || req.params !== undefined) && (req.body || req.body !== undefined)) {
+                const { uuid } = req.params;
+                const { password } = req.body;
+                if (((password || password !== undefined) && (typeof password === 'string')) && ((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            user.password = hashPassword(password);
+                            user.save();
+                            return res.redirect('/auth/login');
+                        };
+                        throw new Error("User doesn't exists !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "UUID or password empty !");
+                }
+            }
+        } else {
+            return customErrorResponse(res, 405, "Method not allowed");
+        }
+    },
+    async getAlbumSongs(req, res) {
         const { User } = await model;
 
         if (req.method === 'GET') {
@@ -153,14 +229,378 @@ module.exports = {
         }
     },
 
-    async logout(req, res) {
-        req.session.regenerate((err) => {
-            if (err) throw err;
-            req.session.user = null;
-            req.session.save((err) => {
-                if (err) throw err;
-                return res.redirect('/auth/login');
-            })
-        });
+    async addSongToAlbum(req, res) {
+        const { User } = await model;
+
+        if (req.method === 'GET') {
+            if (req.params || req.params !== undefined) {
+                const { uuid } = req.params;
+                if (((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            return res.render('auth/changePassword', {
+                                uuid
+                            });
+                        };
+                        throw new Error("User not found !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "Something went wrong !");
+                }
+            }
+        } else if (req.method === 'POST') {
+            if ((req.params || req.params !== undefined) && (req.body || req.body !== undefined)) {
+                const { uuid } = req.params;
+                const { password } = req.body;
+                if (((password || password !== undefined) && (typeof password === 'string')) && ((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            user.password = hashPassword(password);
+                            user.save();
+                            return res.redirect('/auth/login');
+                        };
+                        throw new Error("User doesn't exists !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "UUID or password empty !");
+                }
+            }
+        } else {
+            return customErrorResponse(res, 405, "Method not allowed");
+        }
+    },
+
+    async removeSongFromAlbum(req, res) {
+        const { User } = await model;
+
+        if (req.method === 'GET') {
+            if (req.params || req.params !== undefined) {
+                const { uuid } = req.params;
+                if (((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            return res.render('auth/changePassword', {
+                                uuid
+                            });
+                        };
+                        throw new Error("User not found !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "Something went wrong !");
+                }
+            }
+        } else if (req.method === 'POST') {
+            if ((req.params || req.params !== undefined) && (req.body || req.body !== undefined)) {
+                const { uuid } = req.params;
+                const { password } = req.body;
+                if (((password || password !== undefined) && (typeof password === 'string')) && ((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            user.password = hashPassword(password);
+                            user.save();
+                            return res.redirect('/auth/login');
+                        };
+                        throw new Error("User doesn't exists !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "UUID or password empty !");
+                }
+            }
+        } else {
+            return customErrorResponse(res, 405, "Method not allowed");
+        }
+    },
+
+    async getAlbumByArtist(req, res) {
+        const { User } = await model;
+
+        if (req.method === 'GET') {
+            if (req.params || req.params !== undefined) {
+                const { uuid } = req.params;
+                if (((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            return res.render('auth/changePassword', {
+                                uuid
+                            });
+                        };
+                        throw new Error("User not found !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "Something went wrong !");
+                }
+            }
+        } else if (req.method === 'POST') {
+            if ((req.params || req.params !== undefined) && (req.body || req.body !== undefined)) {
+                const { uuid } = req.params;
+                const { password } = req.body;
+                if (((password || password !== undefined) && (typeof password === 'string')) && ((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            user.password = hashPassword(password);
+                            user.save();
+                            return res.redirect('/auth/login');
+                        };
+                        throw new Error("User doesn't exists !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "UUID or password empty !");
+                }
+            }
+        } else {
+            return customErrorResponse(res, 405, "Method not allowed");
+        }
+    },
+
+    async getTopAlbums(req, res) {
+        const { User } = await model;
+
+        if (req.method === 'GET') {
+            if (req.params || req.params !== undefined) {
+                const { uuid } = req.params;
+                if (((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            return res.render('auth/changePassword', {
+                                uuid
+                            });
+                        };
+                        throw new Error("User not found !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "Something went wrong !");
+                }
+            }
+        } else if (req.method === 'POST') {
+            if ((req.params || req.params !== undefined) && (req.body || req.body !== undefined)) {
+                const { uuid } = req.params;
+                const { password } = req.body;
+                if (((password || password !== undefined) && (typeof password === 'string')) && ((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            user.password = hashPassword(password);
+                            user.save();
+                            return res.redirect('/auth/login');
+                        };
+                        throw new Error("User doesn't exists !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "UUID or password empty !");
+                }
+            }
+        } else {
+            return customErrorResponse(res, 405, "Method not allowed");
+        }
+    },
+
+    async searchAlbums(req, res) {
+        const { User } = await model;
+
+        if (req.method === 'GET') {
+            if (req.params || req.params !== undefined) {
+                const { uuid } = req.params;
+                if (((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            return res.render('auth/changePassword', {
+                                uuid
+                            });
+                        };
+                        throw new Error("User not found !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "Something went wrong !");
+                }
+            }
+        } else if (req.method === 'POST') {
+            if ((req.params || req.params !== undefined) && (req.body || req.body !== undefined)) {
+                const { uuid } = req.params;
+                const { password } = req.body;
+                if (((password || password !== undefined) && (typeof password === 'string')) && ((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            user.password = hashPassword(password);
+                            user.save();
+                            return res.redirect('/auth/login');
+                        };
+                        throw new Error("User doesn't exists !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "UUID or password empty !");
+                }
+            }
+        } else {
+            return customErrorResponse(res, 405, "Method not allowed");
+        }
+    },
+
+    async deleteAlbum(req, res) {
+        const { User } = await model;
+
+        if (req.method === 'GET') {
+            if (req.params || req.params !== undefined) {
+                const { uuid } = req.params;
+                if (((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            return res.render('auth/changePassword', {
+                                uuid
+                            });
+                        };
+                        throw new Error("User not found !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "Something went wrong !");
+                }
+            }
+        } else if (req.method === 'POST') {
+            if ((req.params || req.params !== undefined) && (req.body || req.body !== undefined)) {
+                const { uuid } = req.params;
+                const { password } = req.body;
+                if (((password || password !== undefined) && (typeof password === 'string')) && ((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            user.password = hashPassword(password);
+                            user.save();
+                            return res.redirect('/auth/login');
+                        };
+                        throw new Error("User doesn't exists !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "UUID or password empty !");
+                }
+            }
+        } else {
+            return customErrorResponse(res, 405, "Method not allowed");
+        }
+    },
+
+    async getAlbumDuration(req, res) {
+        const { User } = await model;
+
+        if (req.method === 'GET') {
+            if (req.params || req.params !== undefined) {
+                const { uuid } = req.params;
+                if (((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            return res.render('auth/changePassword', {
+                                uuid
+                            });
+                        };
+                        throw new Error("User not found !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "Something went wrong !");
+                }
+            }
+        } else if (req.method === 'POST') {
+            if ((req.params || req.params !== undefined) && (req.body || req.body !== undefined)) {
+                const { uuid } = req.params;
+                const { password } = req.body;
+                if (((password || password !== undefined) && (typeof password === 'string')) && ((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            user.password = hashPassword(password);
+                            user.save();
+                            return res.redirect('/auth/login');
+                        };
+                        throw new Error("User doesn't exists !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "UUID or password empty !");
+                }
+            }
+        } else {
+            return customErrorResponse(res, 405, "Method not allowed");
+        }
+    },
+    async getAlbumArtists(req, res) {
+        const { User } = await model;
+
+        if (req.method === 'GET') {
+            if (req.params || req.params !== undefined) {
+                const { uuid } = req.params;
+                if (((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            return res.render('auth/changePassword', {
+                                uuid
+                            });
+                        };
+                        throw new Error("User not found !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "Something went wrong !");
+                }
+            }
+        } else if (req.method === 'POST') {
+            if ((req.params || req.params !== undefined) && (req.body || req.body !== undefined)) {
+                const { uuid } = req.params;
+                const { password } = req.body;
+                if (((password || password !== undefined) && (typeof password === 'string')) && ((uuid || uuid !== undefined) && (typeof uuid === 'string'))) {
+                    try {
+                        const user = await (await User).findOne({ where: { resetToken: uuid } });
+                        if (user) {
+                            user.password = hashPassword(password);
+                            user.save();
+                            return res.redirect('/auth/login');
+                        };
+                        throw new Error("User doesn't exists !");
+                    } catch (err) {
+                        return customErrorResponse(res, 404, err.message);
+                    }
+                } else {
+                    return customErrorResponse(res, 404, "UUID or password empty !");
+                }
+            }
+        } else {
+            return customErrorResponse(res, 405, "Method not allowed");
+        }
     }
 }

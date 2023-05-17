@@ -5,7 +5,7 @@ const { hashPassword, hashCompare } = require("../utils/CustomHash");
 const { customErrorResponse } = require("../utils/CustomResponse");
 
 module.exports = {
-    async login(req, res) {
+    async getAllArtists(req, res) {
         const { User } = await model;
 
         if (req.method === 'GET') {
@@ -45,7 +45,7 @@ module.exports = {
             return customErrorResponse(res, 405, "Method not allowed");
         }
     },
-    async register(req, res) {
+    async getArtistById(req, res) {
         const { User, Role } = await model;
 
         if (req.method === 'GET') {
@@ -76,7 +76,7 @@ module.exports = {
             return customErrorResponse(res, 405, "Method not allowed");
         }
     },
-    async resetPassword(req, res) {
+    async createArtist(req, res) {
         const { User } = await model;
 
         if (req.method === 'GET') {
@@ -106,7 +106,7 @@ module.exports = {
         }
     },
 
-    async changePassword(req, res) {
+    async updateArtist(req, res) {
         const { User } = await model;
 
         if (req.method === 'GET') {
@@ -153,7 +153,57 @@ module.exports = {
         }
     },
 
-    async logout(req, res) {
+    async deleteArtist(req, res) {
+        req.session.regenerate((err) => {
+            if (err) throw err;
+            req.session.user = null;
+            req.session.save((err) => {
+                if (err) throw err;
+                return res.redirect('/auth/login');
+            })
+        });
+    },
+    async getArtistAlbums(req, res) {
+        req.session.regenerate((err) => {
+            if (err) throw err;
+            req.session.user = null;
+            req.session.save((err) => {
+                if (err) throw err;
+                return res.redirect('/auth/login');
+            })
+        });
+    },
+    async getArtistSongs(req, res) {
+        req.session.regenerate((err) => {
+            if (err) throw err;
+            req.session.user = null;
+            req.session.save((err) => {
+                if (err) throw err;
+                return res.redirect('/auth/login');
+            })
+        });
+    },
+    async getTopArtists(req, res) {
+        req.session.regenerate((err) => {
+            if (err) throw err;
+            req.session.user = null;
+            req.session.save((err) => {
+                if (err) throw err;
+                return res.redirect('/auth/login');
+            })
+        });
+    },
+    async getArtistPopularSongs(req, res) {
+        req.session.regenerate((err) => {
+            if (err) throw err;
+            req.session.user = null;
+            req.session.save((err) => {
+                if (err) throw err;
+                return res.redirect('/auth/login');
+            })
+        });
+    },
+    async searchArtists(req, res) {
         req.session.regenerate((err) => {
             if (err) throw err;
             req.session.user = null;

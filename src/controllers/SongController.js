@@ -5,7 +5,7 @@ const { hashPassword, hashCompare } = require("../utils/CustomHash");
 const { customErrorResponse } = require("../utils/CustomResponse");
 
 module.exports = {
-    async login(req, res) {
+    async getAllSongs(req, res) {
         const { User } = await model;
 
         if (req.method === 'GET') {
@@ -45,7 +45,7 @@ module.exports = {
             return customErrorResponse(res, 405, "Method not allowed");
         }
     },
-    async register(req, res) {
+    async getSongById(req, res) {
         const { User, Role } = await model;
 
         if (req.method === 'GET') {
@@ -76,7 +76,7 @@ module.exports = {
             return customErrorResponse(res, 405, "Method not allowed");
         }
     },
-    async resetPassword(req, res) {
+    async createSong(req, res) {
         const { User } = await model;
 
         if (req.method === 'GET') {
@@ -106,7 +106,7 @@ module.exports = {
         }
     },
 
-    async changePassword(req, res) {
+    async updateSong(req, res) {
         const { User } = await model;
 
         if (req.method === 'GET') {
@@ -153,7 +153,7 @@ module.exports = {
         }
     },
 
-    async logout(req, res) {
+    async deleteSong(req, res) {
         req.session.regenerate((err) => {
             if (err) throw err;
             req.session.user = null;
@@ -162,5 +162,75 @@ module.exports = {
                 return res.redirect('/auth/login');
             })
         });
-    }
+    },
+    async getSongArtists(req, res) {
+        req.session.regenerate((err) => {
+            if (err) throw err;
+            req.session.user = null;
+            req.session.save((err) => {
+                if (err) throw err;
+                return res.redirect('/auth/login');
+            })
+        });
+    },
+    async getSongAlbum(req, res) {
+        req.session.regenerate((err) => {
+            if (err) throw err;
+            req.session.user = null;
+            req.session.save((err) => {
+                if (err) throw err;
+                return res.redirect('/auth/login');
+            })
+        });
+    },
+    async getSongDuration(req, res) {
+        req.session.regenerate((err) => {
+            if (err) throw err;
+            req.session.user = null;
+            req.session.save((err) => {
+                if (err) throw err;
+                return res.redirect('/auth/login');
+            })
+        });
+    },
+    async getTopSongs(req, res) {
+        req.session.regenerate((err) => {
+            if (err) throw err;
+            req.session.user = null;
+            req.session.save((err) => {
+                if (err) throw err;
+                return res.redirect('/auth/login');
+            })
+        });
+    },
+    async searchSongs(req, res) {
+        req.session.regenerate((err) => {
+            if (err) throw err;
+            req.session.user = null;
+            req.session.save((err) => {
+                if (err) throw err;
+                return res.redirect('/auth/login');
+            })
+        });
+    },
+    async likeSong(req, res) {
+        req.session.regenerate((err) => {
+            if (err) throw err;
+            req.session.user = null;
+            req.session.save((err) => {
+                if (err) throw err;
+                return res.redirect('/auth/login');
+            })
+        });
+    },
+    async unlikeSong(req, res) {
+        req.session.regenerate((err) => {
+            if (err) throw err;
+            req.session.user = null;
+            req.session.save((err) => {
+                if (err) throw err;
+                return res.redirect('/auth/login');
+            })
+        });
+    },
 }
