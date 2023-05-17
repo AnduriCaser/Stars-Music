@@ -11,7 +11,6 @@ module.exports = async (sequelize, DataTypes) => {
             return attributes;
         };
         static async associate(models) {
-            (await models.User).belongsTo((await models.Role), { foreignKey: 'roleId' });
             (await models.User).hasMany((await models.Playlist), { foreignKey: 'userId' });
         };
     };
@@ -21,13 +20,6 @@ module.exports = async (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
-        },
-        roleId: {
-            type: DataTypes.INTEGER,
-            references: {
-                model: 'roles',
-                key: 'id'
-            }
         },
         username: DataTypes.STRING,
         email: {

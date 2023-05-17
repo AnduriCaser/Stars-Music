@@ -9,7 +9,6 @@ const path = require("path");
 
 
 const AuthRouter = require("../routers/AuthRouter");
-const AdminRouter = require("../routers/AdminRouter");
 const UserRouter = require("../routers/UserRouter");
 
 
@@ -40,10 +39,10 @@ module.exports = async (app) => {
         saveUninitialized: true
     }));
 
-    app.use((req, res, next) => {
-        res.locals.csrfToken = req.csrfToken();
-        next();
-    });
+    // app.use((req, res, next) => {
+    //     res.locals.csrfToken = req.csrfToken();
+    //     next();
+    // });
     app.use((req, res, next) => {
         if (!req.session.user) {
             return res.redirect('/auth/login');
