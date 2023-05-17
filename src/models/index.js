@@ -1,7 +1,7 @@
 const fs = require("fs");
 const Sequelize = require("sequelize");
 const path = require("path");
-const variables = require("../config/config");
+//const variables = require("../config/config");
 const Promise = require("bluebird");
 
 const { createDatabase } = require("../db/createDatabase");
@@ -9,7 +9,16 @@ const { createDatabase } = require("../db/createDatabase");
 
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = variables[env];
+const config = {
+    user: 'admin',
+    password: '123456',
+    database: 'stars_music',
+    host: 'mysql22',
+    port: 3306,
+    dialect: 'mysql'
+};
+console.log(config);
+
 const db = {};
 let sequelize;
 

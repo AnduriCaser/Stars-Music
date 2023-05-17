@@ -10,11 +10,11 @@ module.exports = async (sequelize, DataTypes) => {
 
             return attributes;
         };
-        static async associate(models) {
+/*         static async associate(models) {
             (await models.Song).belongsTo((await models.Album), { foreignKey: 'albumId' });
             (await models.Song).belongsTo((await models.Artist), { foreignKey: 'artistId' });
             (await models.Song).belongsTo((await models.Playlist), { foreignKey: 'playlistId' });
-        };
+        }; */
     };
 
     Song.init({
@@ -23,7 +23,7 @@ module.exports = async (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey: true
         },
-        albumId: {
+/*         albumId: {
             type: DataTypes.INTEGER,
             references: {
                 model: 'albums',
@@ -43,10 +43,11 @@ module.exports = async (sequelize, DataTypes) => {
                 model: 'playlists',
                 key: 'id'
             }
-        },
+        }, */
         name: DataTypes.STRING,
         image: DataTypes.STRING,
         duration: DataTypes.STRING,
+        path: DataTypes.STRING,
         slug: {
             type: DataTypes.STRING,
             unique: {

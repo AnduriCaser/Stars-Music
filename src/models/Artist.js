@@ -11,7 +11,7 @@ module.exports = async (sequelize, DataTypes) => {
             return attributes;
         };
         static async associate(models) {
-            (await models.Artist).hasMany((await models.Song), { foreignKey: 'artistId' });
+            //(await models.Artist).hasMany((await models.Song), { foreignKey: 'artistId' });
             (await models.Artist).hasMany((await models.Album), { foreignKey: 'artistId' });
         };
     };

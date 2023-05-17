@@ -10,6 +10,9 @@ const path = require("path");
 
 const AuthRouter = require("../routers/AuthRouter");
 const UserRouter = require("../routers/UserRouter");
+const PlayListRouter = require("../routers/PlayListRouter");
+const songRouter = require("../routers/SongRouter");
+const Playlist = require("../models/Playlist");
 
 
 
@@ -43,18 +46,20 @@ module.exports = async (app) => {
     //     res.locals.csrfToken = req.csrfToken();
     //     next();
     // });
-    app.use((req, res, next) => {
+    /* app.use((req, res, next) => {
         if (!req.session.user) {
             return res.redirect('/auth/login');
         }
         next();
-    });
+    }); */
 
     // Gerekli Routingleri yap en son !!!
 
     //app.use('/admin', AdminRouter);
     app.use('/user', UserRouter);
     app.use('/auth', AuthRouter);
+    app.use('/song', songRouter);
+    app.use('/playlist', PlayListRouter);
 
     app.all('*', (req, res) => {
         return customErrorResponse(res, 404, "Page not found");
