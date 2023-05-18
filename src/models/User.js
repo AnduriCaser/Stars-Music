@@ -60,10 +60,6 @@ module.exports = async (sequelize, DataTypes) => {
     }
     );
 
-    // User.prototype.getRole = async (roleId) => {
-    //     const role = await (await Role).findOne({ where: { id: roleId } });
-    //     return role;
-    // };
     User.prototype.generateToken = async (email) => {
         const token = uuidv4();
         const user = await User.findOne({ where: { email: email } });

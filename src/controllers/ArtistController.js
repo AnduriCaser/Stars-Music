@@ -6,104 +6,13 @@ const { customErrorResponse } = require("../utils/CustomResponse");
 
 module.exports = {
     async getAllArtists(req, res) {
-        const { User } = await model;
-
-        if (req.method === 'GET') {
-            return res.render('auth/login');
-        } else if (req.method === 'POST') {
-            if (req.body || req.body !== undefined) {
-                const { email, password } = req.body;
-                if (((email || email !== undefined) && (typeof email === 'string')) && ((password || password !== undefined) && (typeof password === 'string'))) {
-                    try {
-                        const user = await (await User).findOne({ where: { email: email } });
-                        if (user && hashCompare(user.password, hashPassword(password))) {
-                            req.session.regenerate((err) => {
-                                if (err) throw err;
-                                req.session.user = user;
-                                req.session.save(async (err) => {
-                                    if (err) throw err;
-                                    await user.getRole()
-                                        .then(async (role) => {
-                                            req.session.role = role.name;
-                                            return res.redirect(`/${role.name}/dashboard`);
-                                        });
-                                });
-                            });
-                        } else {
-                            throw new Error("User not found");
-                        }
-                    } catch (err) {
-                        return customErrorResponse(res, 404, err.message);
-                    }
-                } else {
-                    return customErrorResponse(res, 404, "Email or password empty!");
-                }
-            } else {
-                return customErrorResponse(res, 405, "Body is empty");
-            }
-        } else {
-            return customErrorResponse(res, 405, "Method not allowed");
-        }
+        
     },
     async getArtistById(req, res) {
-        const { User, Role } = await model;
-
-        if (req.method === 'GET') {
-            return res.render('auth/register');
-        } else if (req.method === 'POST') {
-            if (req.body || req.body !== undefined) {
-                const { email, password } = req.body;
-                if (((email || email !== undefined) && (typeof email === 'string')) && ((password || password !== undefined) && (typeof password === 'string'))) {
-                    try {
-                        const existsUser = await (await User).findOne({ where: { email: email } });
-                        if (!existsUser) {
-                            const user = await (await User).create({ email: email, password: hashPassword(password) });
-                            const role = await (await Role).findOne({ where: { name: 'user' } });
-                            user.setRole(role);
-                            return res.redirect('/auth/login');
-                        }
-                        throw new Error("User exists !");
-                    } catch (err) {
-                        return customErrorResponse(res, 404, err.message);
-                    }
-                } else {
-                    return customErrorResponse(res, 404, "Something went wrong !");
-                }
-            } else {
-                return customErrorResponse(res, 405, "Body is empty");
-            }
-        } else {
-            return customErrorResponse(res, 405, "Method not allowed");
-        }
+      
     },
     async createArtist(req, res) {
-        const { User } = await model;
-
-        if (req.method === 'GET') {
-            return res.render('auth/resetPassword');
-        } else if (req.method === 'POST') {
-            if (req.body || req.body !== undefined) {
-                const { email } = req.body;
-                if (((email || email !== undefined) && (typeof email === 'string'))) {
-                    try {
-                        const user = await (await User).findOne({ where: { email: email } });
-                        if (user) {
-                            await user.generateToken(user.email);
-                            return res.redirect('/auth/login');
-                        }
-                        throw new Error("User doesn't exists !");
-                    } catch (err) {
-                        return customErrorResponse(res, 404, err.message);
-                    }
-                } else {
-                    return customErrorResponse(res, 404, "Something went wrong !");
-                }
-            } else {
-                return customErrorResponse(res, 405, "Body is empty");
-            }
-        } else {
-            return customErrorResponse(res, 405, "Method not allowed");
-        }
+     
     },
 
     async updateArtist(req, res) {
@@ -154,63 +63,21 @@ module.exports = {
     },
 
     async deleteArtist(req, res) {
-        req.session.regenerate((err) => {
-            if (err) throw err;
-            req.session.user = null;
-            req.session.save((err) => {
-                if (err) throw err;
-                return res.redirect('/auth/login');
-            })
-        });
+       
     },
     async getArtistAlbums(req, res) {
-        req.session.regenerate((err) => {
-            if (err) throw err;
-            req.session.user = null;
-            req.session.save((err) => {
-                if (err) throw err;
-                return res.redirect('/auth/login');
-            })
-        });
+    
     },
     async getArtistSongs(req, res) {
-        req.session.regenerate((err) => {
-            if (err) throw err;
-            req.session.user = null;
-            req.session.save((err) => {
-                if (err) throw err;
-                return res.redirect('/auth/login');
-            })
-        });
+   
     },
     async getTopArtists(req, res) {
-        req.session.regenerate((err) => {
-            if (err) throw err;
-            req.session.user = null;
-            req.session.save((err) => {
-                if (err) throw err;
-                return res.redirect('/auth/login');
-            })
-        });
+      
     },
     async getArtistPopularSongs(req, res) {
-        req.session.regenerate((err) => {
-            if (err) throw err;
-            req.session.user = null;
-            req.session.save((err) => {
-                if (err) throw err;
-                return res.redirect('/auth/login');
-            })
-        });
+      
     },
     async searchArtists(req, res) {
-        req.session.regenerate((err) => {
-            if (err) throw err;
-            req.session.user = null;
-            req.session.save((err) => {
-                if (err) throw err;
-                return res.redirect('/auth/login');
-            })
-        });
+     
     }
 }

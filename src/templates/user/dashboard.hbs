@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <title>Stars Music</title>
+</head>
+
+<body style="background-color: black;overflow: hidden;">
+    <div class="container-fluid px-2">
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="p-3" style="background-color: #4444;border-radius: 10px;min-height: 100px;">
+                    <div class="d-flex py-2 ms-2 mt-4">
+                        <i class="fa fa-home text-white mt-1 me-2"></i>
+                        <h6 style="position: relative;top:1px;" class="card-title text-white">Ana Sayfa</h6>
+                    </div>
+                    <div class="mb-4">
+                        <input class="mb-4"
+                            style="background-color: #4444;width:350px;height:30px;position:relative;top:2px;"
+                            type="text" placeholder="Album ara">
+                        <button class="btn btn-dark btn-sm" type="button">
+                            <i class="fa fa-search text-white"></i>
+                        </button>
+                    </div>
+                </div>
+                {{!-- Arama kısmı için sorgular yapılacak backend side --}}
+                <div class="mt-4 p-3" style="background-color: #4444;border-radius: 10px;min-height: 450px;">
+                    <div class="d-flex py-2 ms-2 mt-4">
+                        <i class="fa fa-list text-white mt-1 me-2"></i>
+                        <h6 class="card-title text-white">Çalma Listem</h6>
+                    </div>
+                    <div class="mb-4">
+                        <input class="mb-4"
+                            style="background-color: #4444;width:350px;height:30px;position:relative;top:2px;"
+                            type="text" placeholder="Çalma listesi ara">
+                        <button class="btn btn-dark btn-sm" type="button">
+                            <i class="fa fa-search text-white"></i>
+                        </button>
+                    </div>
+                    <div class="mt-4">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img width="60px" height="55px" src="/images/master_of_puppets.jpg">
+                            </div>
+                            <div class="col-md-10">
+                                <span class="fw-bolder text-white">Master of Puppets</span>
+                                <p style="color: #949393;" class="card-text">Çalma Listesi Tibet Öğünç</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img width="60px" height="55px" src="/images/master_of_puppets.jpg">
+                            </div>
+                            <div class="col-md-10">
+                                <span class="fw-bolder text-white">Master of Puppets</span>
+                                <p style="color: #949393;" class="card-text">Çalma Listesi Tibet Öğünç</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img width="60px" height="55px" src="/images/master_of_puppets.jpg">
+                            </div>
+                            <div class="col-md-10">
+                                <span class="fw-bolder text-white">Master of Puppets</span>
+                                <p style="color: #949393;" class="card-text">Çalma Listesi Tibet Öğünç</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img width="60px" height="55px" src="/images/master_of_puppets.jpg">
+                            </div>
+                            <div class="col-md-10">
+                                <span class="fw-bolder text-white">Master of Puppets</span>
+                                <p style="color: #949393;" class="card-text">Çalma Listesi Tibet Öğünç</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div style="background-color: #4444;overflow-y: scroll;min-height: 800px;border-radius: 10px;"
+                class="col-md-8">
+                <div class="d-flex justify-content-center align-items-center">
+                    <h4 style="position: relative;right:400px;" class="card-title text-white mt-5 p-2">Albümler</h4>
+                    <i style="background-color: black;border-radius:10px;position:relative;top:15px;left:340px;"
+                        class="fa fa-user text-white mt-4 p-2"></i>
+                </div>
+                <div id="music_albums" class="row px-2 mt-4">
+                    <div class="col-md">
+                        <div class="d-flex flex-column justify-content-center align-items-center py-3"
+                            style="background-color: #111;min-height:220px!important;border-radius:10px;">
+                            <img width="200px" height="180px" style="border-radius: 10px;"
+                                src="/images/master_of_puppets.jpg">
+                            <h6 class="card-title text-white mt-4 text-center">Metallica - Master of Puppets</h6>
+                            <p style="color: #949393;" class="card-text">Stars Music</p>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="d-flex flex-column justify-content-center align-items-center p-3"
+                            style="background-color: #111;min-height:220px!important;border-radius:10px;">
+                            <img width="200px" height="180px" style="border-radius: 10px;"
+                                src="/images/master_of_puppets.jpg">
+                            <h6 class="card-title text-white mt-4 text-center">Metallica - Master of Puppets</h6>
+                            <p style="color: #949393;" class="card-text">Stars Music</p>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="d-flex flex-column justify-content-center align-items-center p-3"
+                            style="background-color: #111;min-height:220px!important;border-radius:10px;">
+                            <img width="200px" height="180px" style="border-radius: 10px;"
+                                src="/images/master_of_puppets.jpg">
+                            <h6 class="card-title text-white mt-4 text-center">Metallica - Master of Puppets</h6>
+                            <p style="color: #949393;" class="card-text">Stars Music</p>
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        <div class="d-flex flex-column justify-content-center align-items-center p-3"
+                            style="background-color: #111;min-height:220px!important;border-radius:10px;">
+                            <img width="200px" height="180px" style="border-radius: 10px;"
+                                src="/images/master_of_puppets.jpg">
+                            <h6 class="card-title text-white mt-4 text-center">Metallica - Master of Puppets</h6>
+                            <p style="color: #949393;" class="card-text">Stars Music</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="background-color: black;width:400px;">
+
+        </div>
+    </div>
+</body>
+<script src="/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#music_albums").children().hover(function () {
+
+        });
+    });
+</script>
+
+</html>

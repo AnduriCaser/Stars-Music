@@ -22,11 +22,7 @@ module.exports = {
                                 req.session.user = user;
                                 req.session.save(async (err) => {
                                     if (err) throw err;
-                                    await user.getRole()
-                                        .then(async (role) => {
-                                            req.session.role = role.name;
-                                            return res.redirect(`/${role.name}/dashboard`);
-                                        });
+                                    return res.redirect(`/user/dashboard`);
                                 });
                             });
                         } else {
@@ -46,28 +42,22 @@ module.exports = {
         }
     },
     async register(req, res) {
-        const { User, Role } = await model;
+        const { User } = await model;
 
         if (req.method === 'GET') {
             return res.render('auth/register');
         } else if (req.method === 'POST') {
             if (req.body || req.body !== undefined) {
-                const { email, password } = req.body;
-                if (((email || email !== undefined) && (typeof email === 'string')) && ((password || password !== undefined) && (typeof password === 'string'))) {
-                    try {
-                        const existsUser = await (await User).findOne({ where: { email: email } });
-                        if (!existsUser) {
-                            const user = await (await User).create({ email: email, password: hashPassword(password) });
-                            const role = await (await Role).findOne({ where: { name: 'user' } });
-                            user.setRole(role);
-                            return res.redirect('/auth/login');
-                        }
-                        throw new Error("User exists !");
-                    } catch (err) {
-                        return customErrorResponse(res, 404, err.message);
+                const { email, phone_number, password } = req.body;
+                try {
+                    const existsUser = await (await User).findOne({ where: { email: email } });
+                    if (!existsUser) {
+                        const user = await (await User).create({ email: email, phoneNumber: phone_number, password: hashPassword(password) });
+                        return res.redirect('/auth/login');
                     }
-                } else {
-                    return customErrorResponse(res, 404, "Something went wrong !");
+                    throw new Error("User exists !");
+                } catch (err) {
+                    return customErrorResponse(res, 404, err.message);
                 }
             } else {
                 return customErrorResponse(res, 405, "Body is empty");
